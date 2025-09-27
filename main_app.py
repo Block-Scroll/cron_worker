@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BlockScroll YouTube Auto-Uploader
+cronWorker YouTube Auto-Uploader
 Main application that generates videos and uploads them to YouTube on schedule
 """
 
@@ -20,12 +20,12 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('blockscroll_app.log'),
+        logging.FileHandler('cronWorker_app.log'),
         logging.StreamHandler()
     ]
 )
 
-class BlockScrollApp:
+class cronWorkerApp:
     def __init__(self):
         self.is_running = False
         self.ist = pytz.timezone('Asia/Kolkata')
@@ -78,9 +78,9 @@ class BlockScrollApp:
         signal.signal(signal.SIGTERM, signal_handler)
     
     def start(self):
-        """Start the BlockScroll application"""
+        """Start the cronWorker application"""
         logging.info("=" * 50)
-        logging.info("BlockScroll YouTube Auto-Uploader Starting...")
+        logging.info("cronWorker YouTube Auto-Uploader Starting...")
         logging.info("=" * 50)
         
         # Check requirements
@@ -103,7 +103,7 @@ class BlockScrollApp:
         try:
             start_youtube_scheduler()
             self.is_running = True
-            logging.info("SUCCESS: BlockScroll app started successfully!")
+            logging.info("SUCCESS: cronWorker app started successfully!")
             logging.info("SCHEDULE: Uploads at 7:30 AM, 12:00 PM, 7:00 PM IST")
             logging.info("STATUS: App will run continuously. Press Ctrl+C to stop.")
             return True
@@ -112,14 +112,14 @@ class BlockScrollApp:
             return False
     
     def stop(self):
-        """Stop the BlockScroll application"""
+        """Stop the cronWorker application"""
         if not self.is_running:
             return
         
-        logging.info("Stopping BlockScroll app...")
+        logging.info("Stopping cronWorker app...")
         stop_youtube_scheduler()
         self.is_running = False
-        logging.info("SUCCESS: BlockScroll app stopped successfully!")
+        logging.info("SUCCESS: cronWorker app stopped successfully!")
     
     def run(self):
         """Run the application continuously"""
@@ -176,8 +176,8 @@ class BlockScrollApp:
             video_id = upload_video(
                 file_path=latest_video,
                 title=test_title,
-                description="Test upload from BlockScroll app",
-                tags=["test", "blockscroll", "shorts", "trending", "viral", "business", "creator", "youtuber", "youtubeshorts"]
+                description="Test upload from cronWorker app",
+                tags=["test", "cronWorker", "shorts", "trending", "viral", "business", "creator", "youtuber", "youtubeshorts"]
             )
             logging.info(f"SUCCESS: YouTube upload test successful! Video ID: {video_id}")
             
@@ -278,7 +278,7 @@ class BlockScrollApp:
 
 def main():
     """Main function with command line options"""
-    app = BlockScrollApp()
+    app = cronWorkerApp()
     
     if len(sys.argv) > 1:
         command = sys.argv[1].lower()
@@ -311,7 +311,7 @@ def main():
             print(f"Success rate: {stats['success_rate']}%")
         elif command == "help":
             print("""
-BlockScroll YouTube Auto-Uploader Commands:
+cronWorker YouTube Auto-Uploader Commands:
 
   python main_app.py start        - Start the app with scheduled uploads
   python main_app.py test-video   - Test video generation only

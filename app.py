@@ -13,10 +13,10 @@ ai = MetaAI()
 IMAGE_SIZE = (1080, 1920)
 TORCH_PATH = "icons/torch.png"
 CAMERA_PATH = "icons/camera.png"
-LOGO_PATH = "icons/blockscroll.png"
+LOGO_PATH = "icons/cronWorker.png"
 
 def ai_function():
-    """Generate a short BlockScroll-style motivational notification about scrolling."""
+    """Generate a short cronWorker-style motivational notification about scrolling."""
     prompt = (
         "Write a single short push-notification text mocking endless scrolling. "
         "Style: achievement unlocked / streak / gaming reward tone. "
@@ -323,7 +323,7 @@ def create_lockscreen_frame(bg_path, notif_msg):
         draw_bold_text(
             notif_draw,
             (160, 40),
-            "BlockScroll",
+            "cronWorker",
             app_name_font,
             "white",
             weight=title_weight,
