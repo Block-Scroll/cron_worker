@@ -127,9 +127,10 @@ class BlockScrollApp:
             return
         
         try:
-            # Main loop - show status every hour
+            # Main loop - show status every 10 seconds
             while self.is_running:
-                time.sleep(3600)  # Sleep for 1 hour
+                print("App is running... Press Ctrl+C to stop.")
+                time.sleep(10)  # Sleep for 10 seconds
                 if self.is_running:
                     logging.info(f"Status: {get_scheduler_status()}")
         except KeyboardInterrupt:
