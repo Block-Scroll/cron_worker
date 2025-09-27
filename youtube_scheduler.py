@@ -418,7 +418,7 @@ if __name__ == "__main__":
     try:
         # Keep running
         while True:
-            time.sleep(60)
+            time.sleep(15)
             print(f"\nStatus: {scheduler.status()}")
     except KeyboardInterrupt:
         print("\nStopping scheduler...")
