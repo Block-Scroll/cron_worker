@@ -328,7 +328,7 @@ class YouTubeScheduler:
         
         while self.is_running:
             schedule.run_pending()
-            time.sleep(60)  # Check every minute
+            time.sleep(15)  # Check every 15 seconds
         
         logging.info("YouTube Scheduler stopped")
     
