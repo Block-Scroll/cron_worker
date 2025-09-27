@@ -4,7 +4,7 @@
 This application automatically generates motivational videos and uploads them to YouTube three times daily at:
 - **7:30 AM IST** - Morning Motivation
 - **12:00 PM IST** - Midday Reality Check  
-- **7:30 PM IST** - Evening Wake-up Call
+- **7:00 PM IST** - Evening Wake-up Call
 
 ## Prerequisites
 

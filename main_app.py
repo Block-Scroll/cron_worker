@@ -104,7 +104,7 @@ class BlockScrollApp:
             start_youtube_scheduler()
             self.is_running = True
             logging.info("SUCCESS: BlockScroll app started successfully!")
-            logging.info("SCHEDULE: Uploads at 7:30 AM, 12:00 PM, 7:30 PM IST")
+            logging.info("SCHEDULE: Uploads at 7:30 AM, 12:00 PM, 7:00 PM IST")
             logging.info("STATUS: App will run continuously. Press Ctrl+C to stop.")
             return True
         except Exception as e:
@@ -321,7 +321,7 @@ BlockScroll YouTube Auto-Uploader Commands:
   python main_app.py stats        - Show upload statistics
   python main_app.py help         - Show this help message
 
-Scheduled uploads: 7:30 AM, 12:00 PM, 7:30 PM IST
+Scheduled uploads: 7:30 AM, 12:00 PM, 7:00 PM IST
 Videos are automatically deleted after successful upload.
 All upload details are logged to video_upload_log.csv
             """)

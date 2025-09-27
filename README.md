@@ -107,7 +107,7 @@ pythonSocialMediaUploader/
 ### Custom Upload Times
 Edit `youtube_scheduler.py`:
 ```python
-self.upload_times = ['07:30', '12:00', '19:30']  # Customize as needed
+self.upload_times = ['07:30', '12:00', '19:00']  # Customize as needed
 ```
 
 ### Video Settings
