@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import pytz
 import csv
 import hashlib
-from youtube_uploader import upload_video
+from exit import upload_video
 from app import generate_video
 import logging
 
@@ -67,7 +67,7 @@ class YouTubeScheduler:
     def _post_comment(self, video_id):
         """Post a comment on the uploaded video"""
         try:
-            from youtube_uploader import get_youtube_service
+            from exit import get_youtube_service
             
             youtube = get_youtube_service()
             

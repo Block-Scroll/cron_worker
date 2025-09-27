@@ -12,7 +12,7 @@ import logging
 import csv
 from datetime import datetime
 import pytz
-from youtube_scheduler import start_youtube_scheduler, stop_youtube_scheduler, get_scheduler_status, scheduler
+from scheduler import start_youtube_scheduler, stop_youtube_scheduler, get_scheduler_status, scheduler
 from app import generate_video, batch_generate_videos
 
 # Configure logging
@@ -169,7 +169,7 @@ class BlockScrollApp:
         latest_video = os.path.join(output_dir, video_files[0])
         
         try:
-            from youtube_uploader import upload_video
+            from exit import upload_video
             # Generate test title using the same format
             test_title = "Success Habits!\nBe the one ✅"
             
@@ -183,7 +183,7 @@ class BlockScrollApp:
             
             # Post test comment
             try:
-                from youtube_uploader import get_youtube_service
+                from exit import get_youtube_service
                 youtube = get_youtube_service()
                 comment_request = youtube.commentThreads().insert(
                     part="snippet",
