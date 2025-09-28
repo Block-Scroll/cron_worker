@@ -1,0 +1,76 @@
+2025-09-28 08:34:23,561 - INFO - Initialized CSV log file: video_upload_log.csv
+2025-09-28 08:34:23,563 - INFO - ==================================================
+2025-09-28 08:34:23,563 - INFO - cronWorker YouTube Auto-Uploader Starting...
+2025-09-28 08:34:23,563 - INFO - ==================================================
+2025-09-28 08:34:23,563 - ERROR - Missing required files/directories:
+2025-09-28 08:34:23,564 - ERROR -   - youtube_uploader.py
+2025-09-28 08:34:23,564 - ERROR -   - youtube_scheduler.py
+2025-09-28 08:34:23,564 - ERROR -   - outputVideos
+2025-09-28 08:34:23,564 - ERROR - Requirements check failed. Please ensure all required files and directories exist.
+2025-09-28 08:35:48,875 - INFO - ==================================================
+2025-09-28 08:35:48,876 - INFO - cronWorker YouTube Auto-Uploader Starting...
+2025-09-28 08:35:48,876 - INFO - ==================================================
+2025-09-28 08:35:48,876 - ERROR - Missing required files/directories:
+2025-09-28 08:35:48,877 - ERROR -   - outputVideos
+2025-09-28 08:35:48,877 - ERROR - Requirements check failed. Please ensure all required files and directories exist.
+2025-09-28 08:36:17,422 - INFO - ==================================================
+2025-09-28 08:36:17,422 - INFO - cronWorker YouTube Auto-Uploader Starting...
+2025-09-28 08:36:17,422 - INFO - ==================================================
+2025-09-28 08:36:17,423 - INFO - Current IST time: 2025-09-28 08:36:17
+2025-09-28 08:36:17,423 - INFO - Next upload scheduled: 2025-09-28 08:37:00 IST
+2025-09-28 08:36:17,423 - INFO - Scheduled upload at 08:37 IST daily
+2025-09-28 08:36:17,424 - INFO - Scheduled upload at 12:00 IST daily
+2025-09-28 08:36:17,424 - INFO - Scheduled upload at 19:00 IST daily
+2025-09-28 08:36:17,424 - INFO - YouTube Scheduler started
+2025-09-28 08:36:17,424 - INFO - YouTube Scheduler started successfully!
+2025-09-28 08:36:17,425 - INFO - Current IST time: 2025-09-28 08:36:17
+2025-09-28 08:36:17,425 - INFO - SUCCESS: cronWorker app started successfully!
+2025-09-28 08:36:17,425 - INFO - SCHEDULE: Uploads at 7:30 AM, 12:00 PM, 7:00 PM IST
+2025-09-28 08:36:17,425 - INFO - STATUS: App will run continuously. Press Ctrl+C to stop.
+2025-09-28 08:36:27,426 - INFO - Status: Scheduler is running. Next upload in 0h 0m at 08:37 IST
+2025-09-28 08:36:37,427 - INFO - Status: Scheduler is running. Next upload in 0h 0m at 08:37 IST
+2025-09-28 08:36:47,428 - INFO - Status: Scheduler is running. Next upload in 0h 0m at 08:37 IST
+2025-09-28 08:36:57,430 - INFO - Status: Scheduler is running. Next upload in 0h 0m at 08:37 IST
+2025-09-28 08:37:02,427 - INFO - Starting video generation and upload for 08:37 IST
+2025-09-28 08:37:02,427 - INFO - Generating video...
+2025-09-28 08:37:07,431 - INFO - Status: Scheduler is running. Next upload in 3h 22m at 12:00 IST
+2025-09-28 08:37:17,431 - INFO - Status: Scheduler is running. Next upload in 3h 22m at 12:00 IST
+2025-09-28 08:37:23,220 - INFO - Found video to upload: outputVideos\lockscreen_1277.mp4
+2025-09-28 08:37:27,433 - INFO - Status: Scheduler is running. Next upload in 3h 22m at 12:00 IST
+2025-09-28 08:37:35,309 - INFO - Uploading to YouTube...
+2025-09-28 08:37:36,094 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-09-28 08:37:37,434 - INFO - Status: Scheduler is running. Next upload in 3h 22m at 12:00 IST
+2025-09-28 08:37:40,187 - INFO - SUCCESS: Successfully uploaded video with ID: ZRPGYWUaqGQ
+2025-09-28 08:37:40,187 - INFO - YOUTUBE: https://www.youtube.com/watch?v=ZRPGYWUaqGQ
+2025-09-28 08:37:40,187 - INFO - Posting comment on uploaded video...
+2025-09-28 08:37:40,203 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-09-28 08:37:42,086 - INFO - SUCCESS: Posted comment on video ZRPGYWUaqGQ
+2025-09-28 08:37:42,087 - INFO - SUCCESS: Comment posted with ID: UgwRqbJaYXJKOSbvM8N4AaABAg
+2025-09-28 08:37:42,088 - INFO - DELETED: Local video file: outputVideos\lockscreen_1277.mp4
+2025-09-28 08:37:42,090 - INFO - Logged video details to CSV: lockscreen_1277.mp4
+2025-09-28 08:37:47,436 - INFO - Status: Scheduler is running. Next upload in 3h 22m at 12:00 IST
+2025-09-28 08:37:57,436 - INFO - Status: Scheduler is running. Next upload in 3h 22m at 12:00 IST
+2025-09-28 08:38:07,437 - INFO - Status: Scheduler is running. Next upload in 3h 21m at 12:00 IST
+2025-09-28 08:38:17,439 - INFO - Status: Scheduler is running. Next upload in 3h 21m at 12:00 IST
+2025-09-28 08:38:27,440 - INFO - Status: Scheduler is running. Next upload in 3h 21m at 12:00 IST
+2025-09-28 08:38:37,441 - INFO - Status: Scheduler is running. Next upload in 3h 21m at 12:00 IST
+2025-09-28 08:38:47,443 - INFO - Status: Scheduler is running. Next upload in 3h 21m at 12:00 IST
+2025-09-28 08:38:57,444 - INFO - Status: Scheduler is running. Next upload in 3h 21m at 12:00 IST
+2025-09-28 08:39:07,445 - INFO - Status: Scheduler is running. Next upload in 3h 20m at 12:00 IST
+2025-09-28 08:39:17,447 - INFO - Status: Scheduler is running. Next upload in 3h 20m at 12:00 IST
+2025-09-28 08:39:27,448 - INFO - Status: Scheduler is running. Next upload in 3h 20m at 12:00 IST
+2025-09-28 08:39:37,449 - INFO - Status: Scheduler is running. Next upload in 3h 20m at 12:00 IST
+2025-09-28 08:39:47,450 - INFO - Status: Scheduler is running. Next upload in 3h 20m at 12:00 IST
+2025-09-28 08:39:57,452 - INFO - Status: Scheduler is running. Next upload in 3h 20m at 12:00 IST
+2025-09-28 08:40:07,454 - INFO - Status: Scheduler is running. Next upload in 3h 19m at 12:00 IST
+2025-09-28 08:40:17,455 - INFO - Status: Scheduler is running. Next upload in 3h 19m at 12:00 IST
+2025-09-28 08:40:27,455 - INFO - Status: Scheduler is running. Next upload in 3h 19m at 12:00 IST
+2025-09-28 08:40:37,457 - INFO - Status: Scheduler is running. Next upload in 3h 19m at 12:00 IST
+2025-09-28 08:40:47,457 - INFO - Status: Scheduler is running. Next upload in 3h 19m at 12:00 IST
+2025-09-28 08:40:57,458 - INFO - Status: Scheduler is running. Next upload in 3h 19m at 12:00 IST
+2025-09-28 08:41:07,459 - INFO - Status: Scheduler is running. Next upload in 3h 18m at 12:00 IST
+2025-09-28 08:41:17,460 - INFO - Status: Scheduler is running. Next upload in 3h 18m at 12:00 IST
+2025-09-28 08:41:20,378 - INFO - Received signal 2, shutting down gracefully...
+2025-09-28 08:41:20,378 - INFO - Stopping cronWorker app...
+2025-09-28 08:41:25,384 - INFO - YouTube Scheduler stopped
+2025-09-28 08:41:25,384 - INFO - SUCCESS: cronWorker app stopped successfully!

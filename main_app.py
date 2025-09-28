@@ -34,8 +34,8 @@ class cronWorkerApp:
         """Check if all required files and directories exist"""
         required_files = [
             'client_secret.json',
-            'youtube_uploader.py',
-            'youtube_scheduler.py',
+            'exit.py',
+            'scheduler.py',
             'app.py'
         ]
         
