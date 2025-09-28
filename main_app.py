@@ -301,6 +301,18 @@ def main():
                 logging.info("✅ Scheduler test completed successfully!")
             else:
                 logging.error("❌ Scheduler test failed!")
+        elif command == "force-upload":
+            if len(sys.argv) > 2:
+                upload_time = sys.argv[2]
+                logging.info(f"Forcing upload for time: {upload_time}")
+                from scheduler import scheduler
+                success = scheduler.force_trigger_upload(upload_time)
+                if success:
+                    logging.info("✅ Force upload completed successfully!")
+                else:
+                    logging.error("❌ Force upload failed!")
+            else:
+                print("Usage: python main_app.py force-upload <time> (e.g., 13:32)")
         elif command == "status":
             if app.is_running:
                 print(get_scheduler_status())
@@ -325,6 +337,7 @@ cronWorker YouTube Auto-Uploader Commands:
   python main_app.py test-upload  - Test YouTube upload with existing video
   python main_app.py test-all     - Run both video and upload tests
   python main_app.py test-scheduler - Test scheduler trigger manually
+  python main_app.py force-upload <time> - Force upload for specific time
   python main_app.py status       - Show current status
   python main_app.py log [N]      - View recent upload log (default: 10 entries)
   python main_app.py stats        - Show upload statistics

@@ -24,7 +24,7 @@ logging.basicConfig(
 class YouTubeScheduler:
     def __init__(self):
         self.ist = pytz.timezone('Asia/Kolkata')
-        self.upload_times = ['07:30', '13:32', '19:00']  # 7:30 AM, 12 PM, 7:00 PM IST
+        self.upload_times = ['07:30', '13:38', '19:00']  # 7:30 AM, 12 PM, 7:00 PM IST
         self.is_running = False
         self.scheduler_thread = None
         self.csv_log_file = 'exitLog.csv'
@@ -484,8 +484,32 @@ class YouTubeScheduler:
                         if next_run:
                             logging.info(f"SCHEDULER DEBUG: Job {i+1} next run: {next_run.strftime('%H:%M:%S IST')}")
             
-            # Run pending jobs
+            # Manual time check for immediate execution
+            current_time_str = current_time.strftime('%H:%M')
+            for upload_time in self.upload_times:
+                if current_time_str == upload_time:
+                    logging.info(f"MANUAL TRIGGER: Current time {current_time_str} matches upload time {upload_time}")
+                    logging.info(f"MANUAL TRIGGER: Running upload for {upload_time}")
+                    
+                    try:
+                        self.generate_and_upload_video(upload_time)
+                        logging.info(f"MANUAL TRIGGER: Successfully completed upload for {upload_time}")
+                    except Exception as e:
+                        logging.error(f"MANUAL TRIGGER: Failed to run upload for {upload_time}: {e}")
+            
+            # Run pending jobs with detailed debugging
             try:
+                # Check each job individually before running
+                for i, job in enumerate(schedule.jobs):
+                    if hasattr(job, 'should_run') and job.should_run:
+                        logging.info(f"SCHEDULER DEBUG: Job {i+1} should run NOW! Executing...")
+                        try:
+                            job.run()
+                            logging.info(f"SCHEDULER DEBUG: Job {i+1} executed successfully!")
+                        except Exception as job_error:
+                            logging.error(f"SCHEDULER DEBUG: Job {i+1} execution failed: {job_error}")
+                
+                # Also run the standard schedule.run_pending()
                 schedule.run_pending()
             except Exception as e:
                 logging.error(f"SCHEDULER DEBUG: Error running pending jobs: {e}")
@@ -593,6 +617,27 @@ class YouTubeScheduler:
             return True
         except Exception as e:
             logging.error(f"🧪 TEST DEBUG: ❌ Manual trigger test failed: {e}")
+            return False
+    
+    def force_trigger_upload(self, upload_time):
+        """Force trigger an upload for a specific time (bypasses duplicate check)"""
+        logging.info(f"FORCE TRIGGER: Manually triggering upload for {upload_time}")
+        
+        try:
+            # Temporarily disable duplicate check
+            original_lock = self.upload_lock
+            self.upload_lock = threading.Lock()
+            
+            # Force the upload
+            self._perform_upload(upload_time)
+            
+            # Restore original lock
+            self.upload_lock = original_lock
+            
+            logging.info(f"FORCE TRIGGER: ✅ Successfully completed upload for {upload_time}")
+            return True
+        except Exception as e:
+            logging.error(f"FORCE TRIGGER: ❌ Failed to run upload for {upload_time}: {e}")
             return False
 
 # Global scheduler instance
