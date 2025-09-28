@@ -294,6 +294,14 @@ def main():
             video_ok = app.test_video_generation()
             if video_ok:
                 app.test_youtube_upload()
+        elif command == "test-scheduler":
+            logging.info("Testing scheduler trigger...")
+            from scheduler import scheduler
+            success = scheduler.test_trigger_now()
+            if success:
+                logging.info("✅ Scheduler test completed successfully!")
+            else:
+                logging.error("❌ Scheduler test failed!")
         elif command == "status":
             if app.is_running:
                 print(get_scheduler_status())
@@ -317,12 +325,13 @@ cronWorker YouTube Auto-Uploader Commands:
   python main_app.py test-video   - Test video generation only
   python main_app.py test-upload  - Test YouTube upload with existing video
   python main_app.py test-all     - Run both video and upload tests
+  python main_app.py test-scheduler - Test scheduler trigger manually
   python main_app.py status       - Show current status
   python main_app.py log [N]      - View recent upload log (default: 10 entries)
   python main_app.py stats        - Show upload statistics
   python main_app.py help         - Show this help message
 
-Scheduled uploads: 7:30 AM, 12:00 PM, 7:00 PM IST
+Scheduled uploads: 11:18 AM, 12:00 PM, 7:00 PM IST
 Videos are automatically deleted after successful upload.
 All upload details are logged to exitLog.csv
             """)

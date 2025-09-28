@@ -23,7 +23,7 @@ logging.basicConfig(
 class YouTubeScheduler:
     def __init__(self):
         self.ist = pytz.timezone('Asia/Kolkata')
-        self.upload_times = ['11:14', '12:00', '19:00']  # 7:30 AM, 12 PM, 7:00 PM IST
+        self.upload_times = ['11:25', '12:00', '19:00']  # 7:30 AM, 12 PM, 7:00 PM IST
         self.is_running = False
         self.scheduler_thread = None
         self.csv_log_file = 'exitLog.csv'
@@ -212,6 +212,10 @@ class YouTubeScheduler:
     
     def generate_and_upload_video(self, upload_time):
         """Generate a video and upload it to YouTube"""
+        logging.info(f"🎬 VIDEO DEBUG: ===== VIDEO GENERATION STARTED =====")
+        logging.info(f"🎬 VIDEO DEBUG: Upload time slot: {upload_time}")
+        logging.info(f"🎬 VIDEO DEBUG: Current IST time: {self.get_current_ist_time().strftime('%Y-%m-%d %H:%M:%S')}")
+        
         video_data = {
             'timestamp': self.get_current_ist_time().strftime('%Y-%m-%d %H:%M:%S IST'),
             'upload_time_slot': upload_time,
@@ -228,11 +232,16 @@ class YouTubeScheduler:
         }
         
         try:
-            logging.info(f"Starting video generation and upload for {upload_time} IST")
+            logging.info(f"🎬 VIDEO DEBUG: Starting video generation and upload for {upload_time} IST")
             
             # Generate video
-            logging.info("Generating video...")
-            generate_video()
+            logging.info("🎬 VIDEO DEBUG: Calling generate_video() function...")
+            try:
+                generate_video()
+                logging.info("🎬 VIDEO DEBUG: ✅ Video generation completed successfully!")
+            except Exception as e:
+                logging.error(f"🎬 VIDEO DEBUG: ❌ Video generation failed: {e}")
+                raise
             
             # Find the most recent video file
             output_dir = "outputVideos"
@@ -319,24 +328,59 @@ class YouTubeScheduler:
     
     def schedule_uploads(self):
         """Schedule video uploads at specified times"""
+        logging.info("🔧 SCHEDULER DEBUG: Setting up scheduled uploads...")
+        logging.info(f"🔧 SCHEDULER DEBUG: Upload times configured: {self.upload_times}")
+        
         for upload_time in self.upload_times:
             schedule.every().day.at(upload_time).do(
                 self.generate_and_upload_video, 
                 upload_time=upload_time
             )
-            logging.info(f"Scheduled upload at {upload_time} IST daily")
+            logging.info(f"✅ SCHEDULER DEBUG: Scheduled upload at {upload_time} IST daily")
+        
+        # Log all scheduled jobs
+        logging.info(f"🔧 SCHEDULER DEBUG: Total scheduled jobs: {len(schedule.jobs)}")
+        for i, job in enumerate(schedule.jobs):
+            logging.info(f"🔧 SCHEDULER DEBUG: Job {i+1}: {job}")
     
     def run_scheduler(self):
         """Run the scheduler in a separate thread"""
         self.is_running = True
-        logging.info("YouTube Scheduler started")
-        logging.info(f"Current IST time: {self.get_current_ist_time().strftime('%Y-%m-%d %H:%M:%S')}")
+        logging.info("🚀 SCHEDULER DEBUG: YouTube Scheduler started")
+        logging.info(f"🕐 SCHEDULER DEBUG: Current IST time: {self.get_current_ist_time().strftime('%Y-%m-%d %H:%M:%S')}")
         
+        # Log next upload times
+        next_upload = self.get_next_upload_time()
+        logging.info(f"⏰ SCHEDULER DEBUG: Next upload scheduled for: {next_upload.strftime('%Y-%m-%d %H:%M:%S IST')}")
+        
+        check_count = 0
         while self.is_running:
-            schedule.run_pending()
+            check_count += 1
+            current_time = self.get_current_ist_time()
+            
+            # Log every 4th check (every minute) to avoid spam
+            if check_count % 4 == 0:
+                logging.info(f"🔍 SCHEDULER DEBUG: Check #{check_count} - Current time: {current_time.strftime('%H:%M:%S IST')}")
+                logging.info(f"🔍 SCHEDULER DEBUG: Pending jobs: {len(schedule.jobs)}")
+                
+                # Check if any jobs should run now
+                for i, job in enumerate(schedule.jobs):
+                    if job.should_run:
+                        logging.info(f"🚨 SCHEDULER DEBUG: Job {i+1} should run NOW! {job}")
+                    else:
+                        next_run = job.next_run
+                        if next_run:
+                            logging.info(f"⏳ SCHEDULER DEBUG: Job {i+1} next run: {next_run.strftime('%H:%M:%S IST')}")
+            
+            # Run pending jobs
+            try:
+                schedule.run_pending()
+            except Exception as e:
+                logging.error(f"❌ SCHEDULER DEBUG: Error running pending jobs: {e}")
+            
             time.sleep(15)  # Check every 15 seconds
         
-        logging.info("YouTube Scheduler stopped")
+        logging.info("🛑 SCHEDULER DEBUG: YouTube Scheduler stopped")
     
     def start(self):
         """Start the scheduler"""
@@ -388,6 +432,20 @@ class YouTubeScheduler:
         minutes, _ = divmod(remainder, 60)
         
         return f"Scheduler is running. Next upload in {int(hours)}h {int(minutes)}m at {next_upload.strftime('%H:%M IST')}"
+    
+    def test_trigger_now(self):
+        """Test function to manually trigger video generation (for debugging)"""
+        logging.info("🧪 TEST DEBUG: Manual trigger test started")
+        current_time = self.get_current_ist_time().strftime('%H:%M')
+        logging.info(f"🧪 TEST DEBUG: Triggering video generation for time slot: {current_time}")
+        
+        try:
+            self.generate_and_upload_video(current_time)
+            logging.info("🧪 TEST DEBUG: ✅ Manual trigger test completed successfully!")
+            return True
+        except Exception as e:
+            logging.error(f"🧪 TEST DEBUG: ❌ Manual trigger test failed: {e}")
+            return False
 
 # Global scheduler instance
 scheduler = YouTubeScheduler()
