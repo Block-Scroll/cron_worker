@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-cronWorker YouTube Auto-Uploader
-Main application that generates videos and uploads them to YouTube on schedule
+cronWorker
 """
 
 import os
@@ -80,7 +79,7 @@ class cronWorkerApp:
     def start(self):
         """Start the cronWorker application"""
         logging.info("=" * 50)
-        logging.info("cronWorker YouTube Auto-Uploader Starting...")
+        logging.info("cronWorker Starting...")
         logging.info("=" * 50)
         
         # Check requirements
@@ -99,7 +98,7 @@ class cronWorkerApp:
         next_upload = scheduler.get_next_upload_time()
         logging.info(f"Next upload scheduled: {next_upload.strftime('%Y-%m-%d %H:%M:%S IST')}")
         
-        # Start YouTube scheduler
+        # Start scheduler
         try:
             start_youtube_scheduler()
             self.is_running = True

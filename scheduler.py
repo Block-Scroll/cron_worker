@@ -23,7 +23,7 @@ logging.basicConfig(
 class YouTubeScheduler:
     def __init__(self):
         self.ist = pytz.timezone('Asia/Kolkata')
-        self.upload_times = ['11:25', '12:00', '19:00']  # 7:30 AM, 12 PM, 7:00 PM IST
+        self.upload_times = ['11:32', '12:00', '19:00']  # 7:30 AM, 12 PM, 7:00 PM IST
         self.is_running = False
         self.scheduler_thread = None
         self.csv_log_file = 'exitLog.csv'
@@ -331,7 +331,11 @@ class YouTubeScheduler:
         logging.info("🔧 SCHEDULER DEBUG: Setting up scheduled uploads...")
         logging.info(f"🔧 SCHEDULER DEBUG: Upload times configured: {self.upload_times}")
         
+        # Clear any existing jobs
+        schedule.clear()
+        
         for upload_time in self.upload_times:
+            # Schedule with explicit timezone handling
             schedule.every().day.at(upload_time).do(
                 self.generate_and_upload_video, 
                 upload_time=upload_time
@@ -342,6 +346,9 @@ class YouTubeScheduler:
         logging.info(f"🔧 SCHEDULER DEBUG: Total scheduled jobs: {len(schedule.jobs)}")
         for i, job in enumerate(schedule.jobs):
             logging.info(f"🔧 SCHEDULER DEBUG: Job {i+1}: {job}")
+            
+        # Also schedule a more frequent check for immediate execution
+        schedule.every(1).minutes.do(self._check_immediate_schedules)
     
     def run_scheduler(self):
         """Run the scheduler in a separate thread"""
@@ -352,6 +359,9 @@ class YouTubeScheduler:
         # Log next upload times
         next_upload = self.get_next_upload_time()
         logging.info(f"⏰ SCHEDULER DEBUG: Next upload scheduled for: {next_upload.strftime('%Y-%m-%d %H:%M:%S IST')}")
+        
+        # Check if we missed any scheduled times today
+        self._check_missed_schedules()
         
         check_count = 0
         while self.is_running:
@@ -378,9 +388,65 @@ class YouTubeScheduler:
             except Exception as e:
                 logging.error(f"❌ SCHEDULER DEBUG: Error running pending jobs: {e}")
             
-            time.sleep(15)  # Check every 15 seconds
+            time.sleep(5)  # Check every 5 seconds for more responsive scheduling
         
         logging.info("🛑 SCHEDULER DEBUG: YouTube Scheduler stopped")
+    
+    def _check_missed_schedules(self):
+        """Check if we missed any scheduled uploads today and run them"""
+        current_time = self.get_current_ist_time()
+        current_time_str = current_time.strftime('%H:%M')
+        
+        logging.info(f"🔍 SCHEDULER DEBUG: Checking for missed schedules at {current_time_str}")
+        
+        # Check each upload time to see if we missed it
+        for upload_time in self.upload_times:
+            # Parse upload time
+            upload_hour, upload_minute = map(int, upload_time.split(':'))
+            current_hour = current_time.hour
+            current_minute = current_time.minute
+            
+            # Check if current time is past the upload time (within 30 minutes)
+            current_minutes = current_hour * 60 + current_minute
+            upload_minutes = upload_hour * 60 + upload_minute
+            
+            # If we're past the upload time but within 30 minutes, run it
+            if upload_minutes < current_minutes <= upload_minutes + 30:
+                logging.info(f"🚨 SCHEDULER DEBUG: Missed schedule detected for {upload_time}!")
+                logging.info(f"🚨 SCHEDULER DEBUG: Running missed upload for {upload_time}")
+                
+                try:
+                    # Run the missed upload
+                    self.generate_and_upload_video(upload_time)
+                    logging.info(f"✅ SCHEDULER DEBUG: Successfully completed missed upload for {upload_time}")
+                except Exception as e:
+                    logging.error(f"❌ SCHEDULER DEBUG: Failed to run missed upload for {upload_time}: {e}")
+            elif upload_minutes < current_minutes:
+                logging.info(f"⏰ SCHEDULER DEBUG: Upload time {upload_time} already passed (more than 30 min ago)")
+            else:
+                logging.info(f"⏰ SCHEDULER DEBUG: Upload time {upload_time} is in the future")
+    
+    def _check_immediate_schedules(self):
+        """Check if we should run any uploads right now (called every minute)"""
+        current_time = self.get_current_ist_time()
+        current_time_str = current_time.strftime('%H:%M')
+        
+        # Check if current time matches any upload time (within 1 minute tolerance)
+        for upload_time in self.upload_times:
+            upload_hour, upload_minute = map(int, upload_time.split(':'))
+            
+            # Check if we're within 1 minute of the scheduled time
+            time_diff = abs((current_time.hour * 60 + current_time.minute) - (upload_hour * 60 + upload_minute))
+            
+            if time_diff <= 1:  # Within 1 minute
+                logging.info(f"🚨 IMMEDIATE SCHEDULE: Current time {current_time_str} matches upload time {upload_time}")
+                logging.info(f"🚨 IMMEDIATE SCHEDULE: Running upload for {upload_time}")
+                
+                try:
+                    self.generate_and_upload_video(upload_time)
+                    logging.info(f"✅ IMMEDIATE SCHEDULE: Successfully completed upload for {upload_time}")
+                except Exception as e:
+                    logging.error(f"❌ IMMEDIATE SCHEDULE: Failed to run upload for {upload_time}: {e}")
     
     def start(self):
         """Start the scheduler"""
