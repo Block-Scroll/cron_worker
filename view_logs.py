@@ -11,7 +11,7 @@ import os
 
 def view_logs(limit=20, show_all=False):
     """View upload logs with various options"""
-    csv_file = 'video_upload_log.csv'
+    csv_file = 'exitLog.csv'
     
     if not os.path.exists(csv_file):
         print("ERROR: No upload log found. Run some uploads first.")
@@ -58,7 +58,7 @@ def view_logs(limit=20, show_all=False):
 
 def show_stats():
     """Show upload statistics"""
-    csv_file = 'video_upload_log.csv'
+    csv_file = 'exitLog.csv'
     
     if not os.path.exists(csv_file):
         print("ERROR: No upload log found.")
@@ -113,7 +113,7 @@ def show_stats():
 
 def export_logs():
     """Export logs to a formatted text file"""
-    csv_file = 'video_upload_log.csv'
+    csv_file = 'exitLog.csv'
     export_file = f'upload_log_export_{datetime.now().strftime("%Y%m%d_%H%M%S")}.txt'
     
     if not os.path.exists(csv_file):

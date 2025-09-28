@@ -217,7 +217,7 @@ class cronWorkerApp:
     
     def view_upload_log(self, limit=10):
         """View recent upload log entries from CSV"""
-        csv_file = 'video_upload_log.csv'
+        csv_file = 'exitLog.csv'
         if not os.path.exists(csv_file):
             logging.info("No upload log found. Run some uploads first.")
             return
@@ -252,7 +252,7 @@ class cronWorkerApp:
     
     def get_upload_stats(self):
         """Get upload statistics from CSV log"""
-        csv_file = 'video_upload_log.csv'
+        csv_file = 'exitLog.csv'
         if not os.path.exists(csv_file):
             return {"total": 0, "successful": 0, "failed": 0, "success_rate": 0}
         
@@ -324,7 +324,7 @@ cronWorker YouTube Auto-Uploader Commands:
 
 Scheduled uploads: 7:30 AM, 12:00 PM, 7:00 PM IST
 Videos are automatically deleted after successful upload.
-All upload details are logged to video_upload_log.csv
+All upload details are logged to exitLog.csv
             """)
         else:
             print(f"Unknown command: {command}")

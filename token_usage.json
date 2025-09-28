@@ -1,0 +1,22 @@
+{
+  "total_prompt_tokens": 124,
+  "total_completion_tokens": 15,
+  "total_tokens": 139,
+  "total_cost": 0.000216,
+  "calls_count": 1,
+  "start_time": "2025-09-28T10:33:25.332579",
+  "calls": [
+    {
+      "timestamp": "2025-09-28T10:33:28.381169",
+      "operation": "Notification Generation",
+      "model": "gpt-3.5-turbo",
+      "prompt_tokens": 124,
+      "completion_tokens": 15,
+      "total_tokens": 139,
+      "input_cost": 0.000186,
+      "output_cost": 3e-05,
+      "call_cost": 0.000216
+    }
+  ],
+  "last_updated": "2025-09-28T10:33:28.382450"
+}

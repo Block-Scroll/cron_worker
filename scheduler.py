@@ -15,7 +15,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('youtube_scheduler.log'),
+        logging.FileHandler('event.log'),
         logging.StreamHandler()
     ]
 )
@@ -26,7 +26,7 @@ class YouTubeScheduler:
         self.upload_times = ['07:00', '12:00', '19:00']  # 7:30 AM, 12 PM, 7:00 PM IST
         self.is_running = False
         self.scheduler_thread = None
-        self.csv_log_file = 'video_upload_log.csv'
+        self.csv_log_file = 'exitLog.csv'
         self._initialize_csv_log()
         
     def _initialize_csv_log(self):
@@ -116,69 +116,75 @@ class YouTubeScheduler:
         return datetime.now(self.ist)
     
     def create_video_title(self, upload_time):
-        """Generate dynamic video title using Meta AI"""
+        """Generate dynamic video title using OpenAI"""
+        import os
+        import random
+        import openai
+        from dotenv import load_dotenv
+        from token_tracker import track_usage
+        
+        # Load environment variables
+        load_dotenv()
+        
+        # Initialize OpenAI client
+        openai_client = openai.OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+        
+        # Generate motivational phrases for the title
+        prompt = (
+            "Generate two short motivational phrases for a YouTube Shorts title. "
+            "Format: First line should be about success habits or achievement, "
+            "second line should be 'Be the one [action]' or 'Achieve [goal]'. "
+            "Keep each line under 20 characters. "
+            "Examples: 'Success Habits!' and 'Be the one ✅' or 'Achieve ✅'. "
+            "Output only the two lines separated by a newline, nothing else."
+        )
+        
+        # Fallback titles if AI fails
+        fallback_titles = [
+            ("Success Habits!", "Be the one ✅"),
+            ("Achieve More!", "Be the one ✅"),
+            ("Win Today!", "Achieve ✅"),
+            ("Success Mindset!", "Be the one ✅"),
+            ("Level Up!", "Achieve ✅")
+        ]
+        
         try:
-            from meta_ai_api import MetaAI
-            ai = MetaAI()
-            
-            # Generate motivational phrases for the title
-            prompt = (
-                "Generate two short motivational phrases for a YouTube Shorts title. "
-                "Format: First line should be about success habits or achievement, "
-                "second line should be 'Be the one [action]' or 'Achieve [goal]'. "
-                "Keep each line under 20 characters. "
-                "Examples: 'Success Habits!' and 'Be the one ✅' or 'Achieve ✅'. "
-                "Output only the two lines separated by a newline, nothing else."
+            response = openai_client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "user", "content": prompt}
+                ],
+                max_tokens=100,
+                temperature=0.7
             )
             
-            # Fallback titles if AI fails
-            fallback_titles = [
-                ("Success Habits!", "Be the one ✅"),
-                ("Achieve More!", "Be the one ✅"),
-                ("Win Today!", "Achieve ✅"),
-                ("Success Mindset!", "Be the one ✅"),
-                ("Level Up!", "Achieve ✅")
-            ]
+            # Track token usage
+            track_usage(response.usage, "Title Generation", "gpt-3.5-turbo")
             
-            try:
-                response_dict = ai.prompt(message=prompt)
-                response = response_dict.get("message", "").strip()
-                
-                # Parse the response
-                if "\n" in response:
-                    lines = response.split("\n")
-                    if len(lines) >= 2:
-                        line1 = lines[0].strip()
-                        line2 = lines[1].strip()
-                        
-                        # Clean up the lines
-                        line1 = line1.replace('"', '').replace("'", "")
-                        line2 = line2.replace('"', '').replace("'", "")
-                        
-                        if len(line1) > 0 and len(line2) > 0:
-                            return f"{line1}\n{line2}"
-                
-                # If parsing failed, use fallback
-                import random
-                fallback = random.choice(fallback_titles)
-                return f"{fallback[0]}\n{fallback[1]}"
-                
-            except Exception as e:
-                logging.warning(f"AI title generation failed: {e}, using fallback")
-                import random
-                fallback = random.choice(fallback_titles)
-                return f"{fallback[0]}\n{fallback[1]}"
-                
-        except Exception as e:
-            logging.warning(f"Meta AI not available: {e}, using fallback")
+            response_text = response.choices[0].message.content.strip()
+            
+            # Parse the response
+            if "\n" in response_text:
+                lines = response_text.split("\n")
+                if len(lines) >= 2:
+                    line1 = lines[0].strip()
+                    line2 = lines[1].strip()
+                    
+                    # Clean up the lines
+                    line1 = line1.replace('"', '').replace("'", "")
+                    line2 = line2.replace('"', '').replace("'", "")
+                    
+                    if len(line1) > 0 and len(line2) > 0:
+                        return f"{line1}\n{line2}"
+            
+            # If parsing failed, use fallback
             import random
-            fallback_titles = [
-                ("Success Habits!", "Be the one ✅"),
-                ("Achieve More!", "Be the one ✅"),
-                ("Win Today!", "Achieve ✅"),
-                ("Success Mindset!", "Be the one ✅"),
-                ("Level Up!", "Achieve ✅")
-            ]
+            fallback = random.choice(fallback_titles)
+            return f"{fallback[0]}\n{fallback[1]}"
+            
+        except Exception as e:
+            logging.warning(f"OpenAI title generation failed: {e}, using fallback")
+            import random
             fallback = random.choice(fallback_titles)
             return f"{fallback[0]}\n{fallback[1]}"
     
