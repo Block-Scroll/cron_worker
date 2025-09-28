@@ -184,10 +184,10 @@ class YouTubeScheduler:
     
     def create_video_description(self, upload_time):
         """Generate dynamic video description"""
-        base_hashtags = "#cronWorker #Productivity #DigitalDetox #Motivation #SelfImprovement #Focus #Success #Mindfulness #BreakTheScroll #shorts #trending #viral #business #creator #youtuber #youtubeshorts"
+        base_hashtags = "#BlockScroll #Productivity #DigitalDetox #Motivation #SelfImprovement #Focus #Success #Mindfulness #BreakTheScroll #shorts #trending #viral #business #creator #youtuber #youtubeshorts"
         
         descriptions = {
-            '07:30': f"""Start your day right! This morning motivation will help you focus on building success habits, not scrolling mindlessly!
+            '07:00': f"""Start your day right! This morning motivation will help you focus on building success habits, not scrolling mindlessly!
 
 {base_hashtags} #MorningMotivation""",
             
@@ -271,7 +271,7 @@ class YouTubeScheduler:
                 file_path=latest_video,
                 title=title,
                 description=description,
-                tags=["cronWorker", "Motivation", "Productivity", "Digital Detox", "Self Improvement", "Focus", "Success", "Mindfulness", "Break The Scroll", "shorts", "trending", "viral", "business", "creator", "youtuber", "youtubeshorts"]
+                tags=["BlockScroll", "Motivation", "Productivity", "Digital Detox", "Self Improvement", "Focus", "Success", "Mindfulness", "Break The Scroll", "shorts", "trending", "viral", "business", "creator", "youtuber", "youtubeshorts"]
             )
             
             # Update video data with successful upload info
